@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EcoFootprint - Advanced Carbon Tracker & Simulator</title>
+  <meta name="description" content="Calculate, simulate, and track your annual carbon footprint. Discover ways to reduce your emissions and save energy.">
+  
+  <!-- Font Integration -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  
+  <!-- CSS Link -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-container">
+    
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+      <div class="logo-area">
+        <i class="fa-solid fa-leaf green-glow-icon"></i>
+        <h2>Eco<span>Footprint</span></h2>
+      </div>
+      
+      <nav class="nav-menu">
+        <a href="#dashboard" class="nav-item active" id="nav-dash"><i class="fa-solid fa-chart-line"></i> Dashboard</a>
+        <a href="#calculator" class="nav-item" id="nav-calc"><i class="fa-solid fa-calculator"></i> Emissions Form</a>
+        <a href="#simulator" class="nav-item" id="nav-sim"><i class="fa-solid fa-sliders"></i> Action Simulator</a>
+        <a href="#history" class="nav-item" id="nav-hist"><i class="fa-solid fa-history"></i> History & Logs</a>
+      </nav>
+      
+      <div class="sidebar-footer">
+        <div class="badge-card">
+          <i class="fa-solid fa-award gold-badge"></i>
+          <div>
+            <h4 id="badge-title">Eco Novice</h4>
+            <p id="badge-desc">Emissions > 10 tonnes</p>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+      
+      <!-- Top Action Bar -->
+      <header class="top-header">
+        <div class="header-info">
+          <h1 id="page-title">Personal Dashboard</h1>
+          <p class="text-muted" id="header-date">Track your environmental impact</p>
+        </div>
+        <div class="header-controls">
+          <!-- Unit Toggle Button -->
+          <button id="btn-unit-toggle" class="control-btn" title="Toggle Units">
+            <i class="fa-solid fa-ruler"></i> <span id="lbl-unit-toggle">Metric (kg/km)</span>
+          </button>
+          
+          <!-- Theme Toggle Button -->
+          <button id="btn-theme-toggle" class="control-btn" title="Toggle Theme">
+            <i class="fa-solid fa-moon"></i>
+          </button>
+        </div>
+      </header>
+
+      <!-- Dashboard View -->
+      <div id="view-dashboard" class="view-section active-view">
+        
+        <!-- Summary Cards Grid -->
+        <div class="stats-grid">
+          
+          <!-- Primary Total Emissions Card -->
+          <div class="stat-card primary-stat">
+            <div class="stat-header">
+              <h3>Annual Carbon Footprint</h3>
+              <i class="fa-solid fa-smog icon-bg"></i>
+            </div>
+            <div class="stat-body">
+              <div class="emissions-number">
+                <span id="txt-total-emissions">0.00</span>
+                <span class="unit-label" id="lbl-total-unit">tonnes CO₂e</span>
+              </div>
+              <div class="trend-indicator" id="emissions-rating">
+                <i class="fa-solid fa-circle-info"></i> Calculate your footprint below!
+              </div>
+            </div>
+            <div class="stat-footer">
+              <span class="target-compare-label">Global 2050 target: &lt; 2.0 t</span>
+            </div>
+          </div>
+          
+          <!-- Equivalent Trees Card -->
+          <div class="stat-card">
+            <div class="stat-header">
+              <h3>Offset Equivalency</h3>
+              <i class="fa-solid fa-tree text-success"></i>
+            </div>
+            <div class="stat-body">
+              <div class="equivalent-number">
+                <span id="txt-equivalent-trees">0</span>
+                <span class="unit-label">Seedlings</span>
+              </div>
+              <p class="stat-desc">Planted & grown for 10 years needed to offset your footprint</p>
+            </div>
+          </div>
+
+          <!-- Quick Comparison Card -->
+          <div class="stat-card">
+            <div class="stat-header">
+              <h3>Comparison to Average</h3>
+              <i class="fa-solid fa-globe text-primary"></i>
+            </div>
+            <div class="stat-body">
+              <div class="compare-container">
+                <div class="compare-bar-group">
+                  <div class="compare-bar-label">You: <span id="txt-compare-you">0.0</span> t</div>
+                  <div class="progress-track"><div id="bar-compare-you" class="progress-fill you-bar" style="width: 0%;"></div></div>
+                </div>
+                <div class="compare-bar-group">
+                  <div class="compare-bar-label">Global Avg: 4.8 t</div>
+                  <div class="progress-track"><div class="progress-fill global-bar" style="width: 30%;"></div></div>
+                </div>
+                <div class="compare-bar-group">
+                  <div class="compare-bar-label">US Avg: 16.0 t</div>
+                  <div class="progress-track"><div class="progress-fill us-bar" style="width: 100%;"></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Dashboard Layout Split -->
+        <div class="dashboard-split-grid">
+          
+          <!-- Left: Quick Overview Chart -->
+          <div class="glass-card chart-container-card">
+            <h3>Emissions Breakdown</h3>
+            <div class="chart-wrapper">
+              <canvas id="chart-breakdown"></canvas>
+            </div>
+          </div>
+
+          <!-- Right: Tips & Highlights -->
+          <div class="glass-card recommendations-preview-card">
+            <h3>Top Areas of Impact</h3>
+            <div class="impact-breakdown-list">
+              <div class="impact-item">
+                <div class="impact-icon-wrapper transport-bg"><i class="fa-solid fa-car"></i></div>
+                <div class="impact-details">
+                  <div class="impact-name">Transport Emissions</div>
+                  <div class="impact-progress-track"><div id="bar-impact-transport" class="impact-progress-fill transport-bg" style="width: 0%;"></div></div>
+                </div>
+                <div class="impact-value"><span id="txt-impact-transport">0.0</span> t</div>
+              </div>
+              <div class="impact-item">
+                <div class="impact-icon-wrapper food-bg"><i class="fa-solid fa-utensils"></i></div>
+                <div class="impact-details">
+                  <div class="impact-name">Food & Diet</div>
+                  <div class="impact-progress-track"><div id="bar-impact-food" class="impact-progress-fill food-bg" style="width: 0%;"></div></div>
+                </div>
+                <div class="impact-value"><span id="txt-impact-food">0.0</span> t</div>
+              </div>
+              <div class="impact-item">
+                <div class="impact-icon-wrapper energy-bg"><i class="fa-solid fa-bolt"></i></div>
+                <div class="impact-details">
+                  <div class="impact-name">Home Energy</div>
+                  <div class="impact-progress-track"><div id="bar-impact-energy" class="impact-progress-fill energy-bg" style="width: 0%;"></div></div>
+                </div>
+                <div class="impact-value"><span id="txt-impact-energy">0.0</span> t</div>
+              </div>
+            </div>
+            <div class="quick-link-area">
+              <a href="#simulator" class="btn btn-secondary fill-width" id="btn-quick-sim"><i class="fa-solid fa-arrow-right"></i> Try the Action Simulator</a>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- Calculator Form View -->
+      <div id="view-calculator" class="view-section">
+        <div class="glass-card calc-form-card">
+          <!-- Calculator Tabs Header -->
+          <div class="calc-tabs">
+            <button class="calc-tab active" data-tab="transport"><i class="fa-solid fa-car"></i> Transport</button>
+            <button class="calc-tab" data-tab="food"><i class="fa-solid fa-utensils"></i> Food & Diet</button>
+            <button class="calc-tab" data-tab="energy"><i class="fa-solid fa-house-chimney"></i> Home Energy</button>
+          </div>
+
+          <form id="calculator-form" onsubmit="event.preventDefault();">
+            
+            <!-- Tab: Transport -->
+            <div class="tab-pane active" id="pane-transport">
+              <div class="form-header-desc">
+                <h3>Calculate Transport Footprint</h3>
+                <p>Vehicles, daily commuting, flights, and public transit all add up. Estimate your annual values below.</p>
+              </div>
+
+              <!-- Vehicle Distance -->
+              <div class="form-group">
+                <div class="group-header">
+                  <label for="slide-car-distance">Annual Driving Distance</label>
+                  <span class="value-display"><span id="val-car-distance">12,000</span> <span class="unit-distance">km</span></span>
+                </div>
+                <input type="range" id="slide-car-distance" min="0" max="60000" step="500" value="12000" class="slider">
+                <div class="slider-ticks">
+                  <span>0</span>
+                  <span>15k</span>
+                  <span>30k</span>
+                  <span>45k</span>
+                  <span>60k+</span>
+                </div>
+              </div>
+
+              <!-- Car Fuel Type -->
+              <div class="form-group half-width-group">
+                <label for="select-fuel-type">Vehicle Fuel Type</label>
+                <div class="custom-select-wrapper">
+                  <select id="select-fuel-type" class="custom-select">
+                    <option value="petrol">Petrol (Gasoline)</option>
+                    <option value="diesel">Diesel</option>
+                    <option value="hybrid">Hybrid</option>
+                    <option value="electric">Electric (EV)</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Public Transport -->
+              <div class="form-group">
+                <div class="group-header">
+                  <label for="slide-transit-distance">Weekly Public Transport Distance (Bus/Train)</label>
+                  <span class="value-display"><span id="val-transit-distance">50</span> <span class="unit-distance">km</span></span>
+                </div>
+                <input type="range" id="slide-transit-distance" min="0" max="500" step="10" value="50" class="slider">
+                <div class="slider-ticks">
+                  <span>0</span>
+                  <span>125</span>
+                  <span>250</span>
+                  <span>375</span>
+                  <span>500+</span>
+                </div>
+              </div>
+
+              <!-- Flights -->
+              <div class="flights-grid">
+                <div class="form-group">
+                  <div class="group-header">
+                    <label for="num-short-flights">Short-haul Flights per Year <small>(Under 3 hrs)</small></label>
+                    <span class="value-display"><span id="val-short-flights">2</span> flights</span>
+                  </div>
+                  <input type="number" id="num-short-flights" min="0" max="100" value="2" class="input-number">
+                </div>
+                <div class="form-group">
+                  <div class="group-header">
+                    <label for="num-long-flights">Long-haul Flights per Year <small>(Over 3 hrs)</small></label>
+                    <span class="value-display"><span id="val-long-flights">0</span> flights</span>
+                  </div>
+                  <input type="number" id="num-long-flights" min="0" max="50" value="0" class="input-number">
+                </div>
+              </div>
+            </div>
+
+            <!-- Tab: Food -->
+            <div class="tab-pane" id="pane-food">
+              <div class="form-header-desc">
+                <h3>Calculate Diet & Food Footprint</h3>
+                <p>The global food system is a massive source of emissions. Choose your base diet profile and adjust consumption.</p>
+              </div>
+
+              <!-- Base Diet Type -->
+              <div class="form-group">
+                <label>Select Base Diet Profile</label>
+                <div class="card-radio-group">
+                  <label class="card-radio-label">
+                    <input type="radio" name="diet-profile" value="heavy-meat" class="hidden-radio">
+                    <span class="radio-card">
+                      <i class="fa-solid fa-drumstick-bite text-error"></i>
+                      <span class="radio-title">Heavy Meat Eater</span>
+                      <span class="radio-desc">Red meat almost daily</span>
+                    </span>
+                  </label>
+                  <label class="card-radio-label">
+                    <input type="radio" name="diet-profile" value="moderate-meat" checked class="hidden-radio">
+                    <span class="radio-card">
+                      <i class="fa-solid fa-hamburger text-warning"></i>
+                      <span class="radio-title">Moderate Meat</span>
+                      <span class="radio-desc">Mixed poultry, pork, light beef</span>
+                    </span>
+                  </label>
+                  <label class="card-radio-label">
+                    <input type="radio" name="diet-profile" value="vegetarian" class="hidden-radio">
+                    <span class="radio-card">
+                      <i class="fa-solid fa-cheese text-primary"></i>
+                      <span class="radio-title">Vegetarian</span>
+                      <span class="radio-desc">No meat, includes dairy/eggs</span>
+                    </span>
+                  </label>
+                  <label class="card-radio-label">
+                    <input type="radio" name="diet-profile" value="vegan" class="hidden-radio">
+                    <span class="radio-card">
+                      <i class="fa-solid fa-carrot text-success"></i>
+                      <span class="radio-title">Vegan</span>
+                      <span class="radio-desc">Strictly plant-based diet</span>
+                    </span>
+                  </label>
+                </div>
+              </div>
+
+              <!-- Sub-sliders for tweaking -->
+              <div class="sub-sliders-container">
+                <h4>Fine-tune Your Weekly Food Consumption</h4>
+
+                <!-- Beef & Lamb Slider -->
+                <div class="form-group">
+                  <div class="group-header">
+                    <label for="slide-beef-servings">Beef & Lamb Servings</label>
+                    <span class="value-display"><span id="val-beef-servings">3</span> per week</span>
+                  </div>
+                  <input type="range" id="slide-beef-servings" min="0" max="14" step="1" value="3" class="slider">
+                  <div class="slider-ticks">
+                    <span>0</span>
+                    <span>3</span>
+                    <span>7</span>
+                    <span>10</span>
+                    <span>14+</span>
+                  </div>
+                </div>
+
+                <!-- Dairy Servings -->
+                <div class="form-group">
+                  <div class="group-header">
+                    <label for="slide-dairy-servings">Dairy & Cheese Servings</label>
+                    <span class="value-display"><span id="val-dairy-servings">10</span> per week</span>
+                  </div>
+                  <input type="range" id="slide-dairy-servings" min="0" max="28" step="1" value="10" class="slider">
+                  <div class="slider-ticks">
+                    <span>0</span>
+                    <span>7</span>
+                    <span>14</span>
+                    <span>21</span>
+                    <span>28+</span>
+                  </div>
+                </div>
+
+                <!-- Local Sourced vs Imported Toggle -->
+                <div class="form-group half-width-group">
+                  <label for="select-food-sourcing">Food Sourcing Profile</label>
+                  <div class="custom-select-wrapper">
+                    <select id="select-food-sourcing" class="custom-select">
+                      <option value="imported">Mostly Imported (High Air Miles)</option>
+                      <option value="average" selected>Average Mix (Local & Imported)</option>
+                      <option value="local">Locally Sourced / Seasonal</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Tab: Home Energy -->
+            <div class="tab-pane" id="pane-energy">
+              <div class="form-header-desc">
+                <h3>Calculate Home Energy Footprint</h3>
+                <p>Power and heating make up a substantial part of carbon footprints. Check your monthly utility bill specs.</p>
+              </div>
+
+              <!-- Monthly Electricity -->
+              <div class="form-group">
+                <div class="group-header">
+                  <label for="slide-electricity-usage">Monthly Electricity Usage</label>
+                  <span class="value-display"><span id="val-electricity-usage">350</span> kWh</span>
+                </div>
+                <input type="range" id="slide-electricity-usage" min="0" max="2000" step="25" value="350" class="slider">
+                <div class="slider-ticks">
+                  <span>0</span>
+                  <span>500 kWh</span>
+                  <span>1000 kWh</span>
+                  <span>1500 kWh</span>
+                  <span>2000 kWh</span>
+                </div>
+              </div>
+
+              <!-- Solar Clean Offset -->
+              <div class="form-group">
+                <div class="group-header">
+                  <label for="slide-solar-offset">Renewable Energy / Solar Offset</label>
+                  <span class="value-display"><span id="val-solar-offset">0</span>%</span>
+                </div>
+                <input type="range" id="slide-solar-offset" min="0" max="100" step="5" value="0" class="slider">
+                <div class="slider-ticks">
+                  <span>0%</span>
+                  <span>25%</span>
+                  <span>50%</span>
+                  <span>75%</span>
+                  <span>100% (Green power)</span>
+                </div>
+              </div>
+
+              <!-- Heating Fuel Selection -->
+              <div class="energy-heating-grid">
+                <div class="form-group">
+                  <label for="select-heating-fuel">Primary Heating Fuel</label>
+                  <div class="custom-select-wrapper">
+                    <select id="select-heating-fuel" class="custom-select">
+                      <option value="natural-gas" selected>Natural Gas</option>
+                      <option value="heating-oil">Heating Oil</option>
+                      <option value="electricity">Electric Heating</option>
+                      <option value="biomass">Biomass / Wood pellets</option>
+                      <option value="none">None / No heating</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <div class="group-header">
+                    <label for="slide-heating-usage">Monthly Heating Fuel Usage</label>
+                    <span class="value-display"><span id="val-heating-usage">500</span> kWh</span>
+                  </div>
+                  <input type="range" id="slide-heating-usage" min="0" max="3000" step="50" value="500" class="slider">
+                  <div class="slider-ticks">
+                    <span>0</span>
+                    <span>750</span>
+                    <span>1500</span>
+                    <span>2250</span>
+                    <span>3000 kWh</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Form Actions -->
+            <div class="form-footer-actions">
+              <button type="button" class="btn btn-secondary" id="btn-reset-form"><i class="fa-solid fa-rotate-left"></i> Reset Defaults</button>
+              <button type="button" class="btn btn-primary" id="btn-save-inputs"><i class="fa-solid fa-save"></i> Save Baseline & View Stats</button>
+            </div>
+
+          </form>
+        </div>
+      </div>
+
+      <!-- Action Simulator View -->
+      <div id="view-simulator" class="view-section">
+        
+        <!-- Action Dashboard Summary -->
+        <div class="simulator-summary glass-card">
+          <div class="sim-metric-panel">
+            <div class="sim-column">
+              <div class="sim-label">Current Footprint</div>
+              <div class="sim-value text-muted-value"><span id="sim-current-val">0.00</span> <small>t CO₂e</small></div>
+            </div>
+            <div class="sim-column divider-left">
+              <div class="sim-label text-success-light">Simulated Savings</div>
+              <div class="sim-value text-success-value">-<span id="sim-savings-val">0.00</span> <small>t CO₂e</small></div>
+            </div>
+            <div class="sim-column divider-left">
+              <div class="sim-label">Projected Footprint</div>
+              <div class="sim-value text-primary-value"><span id="sim-projected-val">0.00</span> <small>t CO₂e</small></div>
+            </div>
+          </div>
+          
+          <div class="simulator-progress-area">
+            <div class="progress-labels">
+              <span>Goal: 2.0 tonnes</span>
+              <span id="txt-sim-percentage">0% Reduced</span>
+            </div>
+            <div class="progress-track-large">
+              <!-- Current bar base -->
+              <div id="bar-sim-current" class="progress-fill-large base-bar" style="width: 100%;"></div>
+              <!-- Projected (shrunk) bar overlay -->
+              <div id="bar-sim-projected" class="progress-fill-large project-bar" style="width: 100%;"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="simulator-layout">
+          <!-- Left: Action Items Checklists -->
+          <div class="glass-card flex-grow-1">
+            <h3>Mitigation Plan</h3>
+            <p class="text-muted text-sm margin-bottom-md">Select options you could adapt to your lifestyle to live more sustainably. Watch your projected footprint shift in real-time!</p>
+            
+            <div class="sim-tabs">
+              <button class="sim-tab active" data-sim-cat="all">All Actions</button>
+              <button class="sim-tab" data-sim-cat="transport">Transport</button>
+              <button class="sim-tab" data-sim-cat="food">Diet & Food</button>
+              <button class="sim-tab" data-sim-cat="energy">Home Energy</button>
+            </div>
+
+            <div class="sim-action-list" id="action-list-container">
+              <!-- Action lists will be generated dynamically by app.js to reflect user numbers -->
+            </div>
+          </div>
+
+          <!-- Right: Tips info card -->
+          <div class="glass-card sim-guide-card">
+            <h3>Why Take Action?</h3>
+            <div class="guide-steps">
+              <div class="guide-step">
+                <span class="step-num">1</span>
+                <div>
+                  <h5>Limit warming to 1.5°C</h5>
+                  <p>Keeping climate warming within safe boundaries requires reducing per-capita emissions to below 2 tonnes by 2050.</p>
+                </div>
+              </div>
+              <div class="guide-step">
+                <span class="step-num">2</span>
+                <div>
+                  <h5>Compound Savings</h5>
+                  <p>Many steps, like public transport and thermal efficiency, not only save carbon but also save hundreds in costs annually.</p>
+                </div>
+              </div>
+              <div class="guide-step">
+                <span class="step-num">3</span>
+                <div>
+                  <h5>Empowerment</h5>
+                  <p>Personal choices drive market forces. Vegan purchases and clean energy adoption force companies to shift policies.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- History & Logs View -->
+      <div id="view-history" class="view-section">
+        
+        <div class="history-grid-layout">
+          <!-- Left: Save Form and Trend Chart -->
+          <div class="glass-card history-chart-card">
+            <h3>Emissions Log History</h3>
+            <p class="text-muted text-sm">Save your calculations under different names (e.g., "June 2026", "Post-solar installation") to see your progress chart.</p>
+            
+            <form id="save-log-form" class="save-log-inline" onsubmit="event.preventDefault();">
+              <input type="text" id="input-log-name" placeholder="Name this entry (e.g., Target 2026)" required class="text-input">
+              <button type="submit" class="btn btn-primary"><i class="fa-solid fa-floppy-disk"></i> Save Current State</button>
+            </form>
+
+            <div class="chart-wrapper line-chart-wrapper">
+              <canvas id="chart-history"></canvas>
+            </div>
+          </div>
+
+          <!-- Right: History List Table -->
+          <div class="glass-card history-table-card">
+            <h3>Saved Entries</h3>
+            <div class="table-wrapper">
+              <table class="history-table">
+                <thead>
+                  <tr>
+                    <th>Label</th>
+                    <th>Date</th>
+                    <th>Emissions</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="table-body-logs">
+                  <tr>
+                    <td colspan="4" class="text-center text-muted py-4">No records saved yet. Adjust calculations and save!</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            
+            <div class="table-actions">
+              <button id="btn-clear-history" class="btn btn-danger-outline btn-sm"><i class="fa-solid fa-trash-can"></i> Clear All History</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </main>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
