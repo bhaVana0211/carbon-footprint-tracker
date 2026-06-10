@@ -214,19 +214,21 @@ let breakdownChart = null;
 let historyChart = null;
 
 // Initialize Web App
-document.addEventListener("DOMContentLoaded", () => {
-  loadData();
-  setupNavigation();
-  setupTheme();
-  setupUnitSystem();
-  setupFormControls();
-  calculateAll();
-  renderHistoryTable();
-  initBreakdownChart();
-  initHistoryChart();
-  renderSimulatorActions();
-  updateBadge();
-});
+if (typeof document !== 'undefined') {
+  document.addEventListener("DOMContentLoaded", () => {
+    loadData();
+    setupNavigation();
+    setupTheme();
+    setupUnitSystem();
+    setupFormControls();
+    calculateAll();
+    renderHistoryTable();
+    initBreakdownChart();
+    initHistoryChart();
+    renderSimulatorActions();
+    updateBadge();
+  });
+}
 
 // Load state from localStorage
 function loadData() {
@@ -468,16 +470,51 @@ function setupFormControls() {
   bindSliderDisplay(dairySlider, "val-dairy-servings");
 
   // Input events
-  shortFlightsInput.addEventListener("input", () => {
-    document.getElementById("val-short-flights").textContent = shortFlightsInput.value;
-    updateInputState("shortFlights", shortFlightsInput.value);
+  const handleFlightInput = (inputEl, stateKey, displayElId) => {
+    let valStr = inputEl.value;
+    if (valStr === "") return; // let them clear and type, will clamp on blur
+    
+    let val = parseInt(valStr);
+    const limits = {
+      shortFlights: { min: 0, max: 100 },
+      longFlights: { min: 0, max: 50 }
+    };
+    const { min, max } = limits[stateKey];
+    
+    if (!isNaN(val)) {
+      if (val < min) val = min;
+      if (val > max) val = max;
+      inputEl.value = val;
+    }
+    
+    document.getElementById(displayElId).textContent = inputEl.value;
+    updateInputState(stateKey, inputEl.value);
     calculateAll();
+  };
+
+  const handleFlightBlur = (inputEl, stateKey, displayElId) => {
+    if (inputEl.value === "") {
+      inputEl.value = 0;
+      document.getElementById(displayElId).textContent = "0";
+      updateInputState(stateKey, 0);
+      calculateAll();
+    }
+  };
+
+  shortFlightsInput.addEventListener("input", () => {
+    handleFlightInput(shortFlightsInput, "shortFlights", "val-short-flights");
+  });
+
+  shortFlightsInput.addEventListener("blur", () => {
+    handleFlightBlur(shortFlightsInput, "shortFlights", "val-short-flights");
   });
 
   longFlightsInput.addEventListener("input", () => {
-    document.getElementById("val-long-flights").textContent = longFlightsInput.value;
-    updateInputState("longFlights", longFlightsInput.value);
-    calculateAll();
+    handleFlightInput(longFlightsInput, "longFlights", "val-long-flights");
+  });
+
+  longFlightsInput.addEventListener("blur", () => {
+    handleFlightBlur(longFlightsInput, "longFlights", "val-long-flights");
   });
 
   fuelSelect.addEventListener("change", () => {
@@ -661,7 +698,27 @@ function updateInputState(id, value) {
   };
 
   const stateKey = stateMapping[key] || key;
-  state.inputs[stateKey] = isNaN(floatVal) ? value : floatVal;
+  let finalVal = isNaN(floatVal) ? value : floatVal;
+
+  if (!isNaN(floatVal)) {
+    const limits = {
+      carDistance: { min: 0, max: 60000 },
+      transitDistance: { min: 0, max: 500 },
+      shortFlights: { min: 0, max: 100 },
+      longFlights: { min: 0, max: 50 },
+      beefServings: { min: 0, max: 14 },
+      dairyServings: { min: 0, max: 28 },
+      electricityUsage: { min: 0, max: 2000 },
+      solarOffset: { min: 0, max: 100 },
+      heatingUsage: { min: 0, max: 3000 }
+    };
+    if (limits[stateKey]) {
+      const { min, max } = limits[stateKey];
+      finalVal = Math.max(min, Math.min(max, floatVal));
+    }
+  }
+
+  state.inputs[stateKey] = finalVal;
 }
 
 function syncTextDisplays() {
@@ -1058,13 +1115,13 @@ function renderSimulatorActions() {
     if (action.category === 'energy') iconClass = "fa-bolt energy-bg text-white";
 
     actionCard.innerHTML = `
-      <input type="checkbox" class="action-checkbox" ${isChecked ? 'checked' : ''}>
-      <div class="action-badge ${iconClass.split(' ')[1]}">
+      <input type="checkbox" id="chk-${action.id}" class="action-checkbox" ${isChecked ? 'checked' : ''} aria-labelledby="title-${action.id}" aria-describedby="desc-${action.id}">
+      <div class="action-badge ${iconClass.split(' ')[1]}" aria-hidden="true">
         <i class="fa-solid ${iconClass.split(' ')[0]}"></i>
       </div>
       <div class="action-details">
-        <div class="action-title">${action.title}</div>
-        <div class="action-desc text-muted text-sm">${action.desc}</div>
+        <div class="action-title" id="title-${action.id}">${action.title}</div>
+        <div class="action-desc text-muted text-sm" id="desc-${action.id}">${action.desc}</div>
       </div>
       <div class="action-impact">${displaySavingText}</div>
     `;
@@ -1094,8 +1151,12 @@ function renderSimulatorActions() {
     // Avoid binding redundant listener
     if (!tab.dataset.hasListener) {
       tab.addEventListener("click", () => {
-        simTabs.forEach(t => t.classList.remove('active'));
+        simTabs.forEach(t => {
+          t.classList.remove('active');
+          t.setAttribute('aria-selected', 'false');
+        });
         tab.classList.add('active');
+        tab.setAttribute('aria-selected', 'true');
         renderSimulatorActions();
       });
       tab.dataset.hasListener = "true";
@@ -1229,16 +1290,32 @@ function formatDate(dateString) {
 }
 
 // Form Tabs logic
-const tabs = document.querySelectorAll(".calc-tab");
-const panes = document.querySelectorAll(".tab-pane");
+if (typeof document !== 'undefined') {
+  const tabs = document.querySelectorAll(".calc-tab");
+  const panes = document.querySelectorAll(".tab-pane");
 
-tabs.forEach(tab => {
-  tab.addEventListener("click", () => {
-    tabs.forEach(t => t.classList.remove("active"));
-    panes.forEach(p => p.classList.remove("active"));
+  tabs.forEach(tab => {
+    tab.addEventListener("click", () => {
+      tabs.forEach(t => {
+        t.classList.remove("active");
+        t.setAttribute("aria-selected", "false");
+      });
+      panes.forEach(p => p.classList.remove("active"));
 
-    tab.classList.add("active");
-    const targetPaneId = `pane-${tab.getAttribute("data-tab")}`;
-    document.getElementById(targetPaneId).classList.add("active");
+      tab.classList.add("active");
+      tab.setAttribute("aria-selected", "true");
+      const targetPaneId = `pane-${tab.getAttribute("data-tab")}`;
+      document.getElementById(targetPaneId).classList.add("active");
+    });
   });
-});
+}
+
+// Export for testing in Node.js environment
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = {
+    state,
+    EMISSION_FACTORS,
+    calculateCurrentEmissions,
+    SIMULATOR_ACTIONS
+  };
+}

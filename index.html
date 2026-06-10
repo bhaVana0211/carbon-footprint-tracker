@@ -26,26 +26,26 @@
     <!-- Sidebar Navigation -->
     <aside class="sidebar">
       <div class="logo-area">
-        <i class="fa-solid fa-leaf green-glow-icon"></i>
+        <i class="fa-solid fa-leaf green-glow-icon" aria-hidden="true"></i>
         <h2>Eco<span>Footprint</span></h2>
       </div>
       
-      <nav class="nav-menu">
-        <a href="#dashboard" class="nav-item active" id="nav-dash"><i class="fa-solid fa-chart-line"></i> Dashboard</a>
-        <a href="#calculator" class="nav-item" id="nav-calc"><i class="fa-solid fa-calculator"></i> Emissions Form</a>
-        <a href="#simulator" class="nav-item" id="nav-sim"><i class="fa-solid fa-sliders"></i> Action Simulator</a>
-        <a href="#history" class="nav-item" id="nav-hist"><i class="fa-solid fa-history"></i> History & Logs</a>
+      <nav class="nav-menu" aria-label="Sidebar Menu">
+        <a href="#dashboard" class="nav-item active" id="nav-dash"><i class="fa-solid fa-chart-line" aria-hidden="true"></i> Dashboard</a>
+        <a href="#calculator" class="nav-item" id="nav-calc"><i class="fa-solid fa-calculator" aria-hidden="true"></i> Emissions Form</a>
+        <a href="#simulator" class="nav-item" id="nav-sim"><i class="fa-solid fa-sliders" aria-hidden="true"></i> Action Simulator</a>
+        <a href="#history" class="nav-item" id="nav-hist"><i class="fa-solid fa-history" aria-hidden="true"></i> History & Logs</a>
       </nav>
       
-      <div class="sidebar-footer">
+      <footer class="sidebar-footer">
         <div class="badge-card">
-          <i class="fa-solid fa-award gold-badge"></i>
+          <i class="fa-solid fa-award gold-badge" aria-hidden="true"></i>
           <div>
             <h4 id="badge-title">Eco Novice</h4>
             <p id="badge-desc">Emissions > 10 tonnes</p>
           </div>
         </div>
-      </div>
+      </footer>
     </aside>
 
     <!-- Main Content Area -->
@@ -60,18 +60,18 @@
         <div class="header-controls">
           <!-- Unit Toggle Button -->
           <button id="btn-unit-toggle" class="control-btn" title="Toggle Units">
-            <i class="fa-solid fa-ruler"></i> <span id="lbl-unit-toggle">Metric (kg/km)</span>
+            <i class="fa-solid fa-ruler" aria-hidden="true"></i> <span id="lbl-unit-toggle">Metric (kg/km)</span>
           </button>
           
           <!-- Theme Toggle Button -->
-          <button id="btn-theme-toggle" class="control-btn" title="Toggle Theme">
-            <i class="fa-solid fa-moon"></i>
+          <button id="btn-theme-toggle" class="control-btn" title="Toggle Theme" aria-label="Toggle light or dark theme">
+            <i class="fa-solid fa-moon" aria-hidden="true"></i>
           </button>
         </div>
       </header>
 
       <!-- Dashboard View -->
-      <div id="view-dashboard" class="view-section active-view">
+      <section id="view-dashboard" class="view-section active-view" aria-labelledby="page-title">
         
         <!-- Summary Cards Grid -->
         <div class="stats-grid">
@@ -80,7 +80,7 @@
           <div class="stat-card primary-stat">
             <div class="stat-header">
               <h3>Annual Carbon Footprint</h3>
-              <i class="fa-solid fa-smog icon-bg"></i>
+              <i class="fa-solid fa-smog icon-bg" aria-hidden="true"></i>
             </div>
             <div class="stat-body">
               <div class="emissions-number">
@@ -88,7 +88,7 @@
                 <span class="unit-label" id="lbl-total-unit">tonnes CO₂e</span>
               </div>
               <div class="trend-indicator" id="emissions-rating">
-                <i class="fa-solid fa-circle-info"></i> Calculate your footprint below!
+                <i class="fa-solid fa-circle-info" aria-hidden="true"></i> Calculate your footprint below!
               </div>
             </div>
             <div class="stat-footer">
@@ -100,7 +100,7 @@
           <div class="stat-card">
             <div class="stat-header">
               <h3>Offset Equivalency</h3>
-              <i class="fa-solid fa-tree text-success"></i>
+              <i class="fa-solid fa-tree text-success" aria-hidden="true"></i>
             </div>
             <div class="stat-body">
               <div class="equivalent-number">
@@ -115,7 +115,7 @@
           <div class="stat-card">
             <div class="stat-header">
               <h3>Comparison to Average</h3>
-              <i class="fa-solid fa-globe text-primary"></i>
+              <i class="fa-solid fa-globe text-primary" aria-hidden="true"></i>
             </div>
             <div class="stat-body">
               <div class="compare-container">
@@ -153,7 +153,7 @@
             <h3>Top Areas of Impact</h3>
             <div class="impact-breakdown-list">
               <div class="impact-item">
-                <div class="impact-icon-wrapper transport-bg"><i class="fa-solid fa-car"></i></div>
+                <div class="impact-icon-wrapper transport-bg"><i class="fa-solid fa-car" aria-hidden="true"></i></div>
                 <div class="impact-details">
                   <div class="impact-name">Transport Emissions</div>
                   <div class="impact-progress-track"><div id="bar-impact-transport" class="impact-progress-fill transport-bg" style="width: 0%;"></div></div>
@@ -161,7 +161,7 @@
                 <div class="impact-value"><span id="txt-impact-transport">0.0</span> t</div>
               </div>
               <div class="impact-item">
-                <div class="impact-icon-wrapper food-bg"><i class="fa-solid fa-utensils"></i></div>
+                <div class="impact-icon-wrapper food-bg"><i class="fa-solid fa-utensils" aria-hidden="true"></i></div>
                 <div class="impact-details">
                   <div class="impact-name">Food & Diet</div>
                   <div class="impact-progress-track"><div id="bar-impact-food" class="impact-progress-fill food-bg" style="width: 0%;"></div></div>
@@ -169,7 +169,7 @@
                 <div class="impact-value"><span id="txt-impact-food">0.0</span> t</div>
               </div>
               <div class="impact-item">
-                <div class="impact-icon-wrapper energy-bg"><i class="fa-solid fa-bolt"></i></div>
+                <div class="impact-icon-wrapper energy-bg"><i class="fa-solid fa-bolt" aria-hidden="true"></i></div>
                 <div class="impact-details">
                   <div class="impact-name">Home Energy</div>
                   <div class="impact-progress-track"><div id="bar-impact-energy" class="impact-progress-fill energy-bg" style="width: 0%;"></div></div>
@@ -178,33 +178,34 @@
               </div>
             </div>
             <div class="quick-link-area">
-              <a href="#simulator" class="btn btn-secondary fill-width" id="btn-quick-sim"><i class="fa-solid fa-arrow-right"></i> Try the Action Simulator</a>
+              <a href="#simulator" class="btn btn-secondary fill-width" id="btn-quick-sim"><i class="fa-solid fa-arrow-right" aria-hidden="true"></i> Try the Action Simulator</a>
             </div>
           </div>
 
         </div>
 
-      </div>
+      </section>
 
       <!-- Calculator Form View -->
-      <div id="view-calculator" class="view-section">
+      <section id="view-calculator" class="view-section" aria-labelledby="calc-title">
+        <h2 id="calc-title" class="sr-only">Emissions Calculator</h2>
         <div class="glass-card calc-form-card">
           <!-- Calculator Tabs Header -->
-          <div class="calc-tabs">
-            <button class="calc-tab active" data-tab="transport"><i class="fa-solid fa-car"></i> Transport</button>
-            <button class="calc-tab" data-tab="food"><i class="fa-solid fa-utensils"></i> Food & Diet</button>
-            <button class="calc-tab" data-tab="energy"><i class="fa-solid fa-house-chimney"></i> Home Energy</button>
+          <div class="calc-tabs" role="tablist" aria-label="Emissions Categories">
+            <button class="calc-tab active" role="tab" aria-selected="true" aria-controls="pane-transport" id="tab-transport" data-tab="transport"><i class="fa-solid fa-car" aria-hidden="true"></i> Transport</button>
+            <button class="calc-tab" role="tab" aria-selected="false" aria-controls="pane-food" id="tab-food" data-tab="food"><i class="fa-solid fa-utensils" aria-hidden="true"></i> Food & Diet</button>
+            <button class="calc-tab" role="tab" aria-selected="false" aria-controls="pane-energy" id="tab-energy" data-tab="energy"><i class="fa-solid fa-house-chimney" aria-hidden="true"></i> Home Energy</button>
           </div>
 
           <form id="calculator-form" onsubmit="event.preventDefault();">
             
             <!-- Tab: Transport -->
-            <div class="tab-pane active" id="pane-transport">
+            <div class="tab-pane active" id="pane-transport" role="tabpanel" aria-labelledby="tab-transport">
               <div class="form-header-desc">
                 <h3>Calculate Transport Footprint</h3>
                 <p>Vehicles, daily commuting, flights, and public transit all add up. Estimate your annual values below.</p>
               </div>
-
+              
               <!-- Vehicle Distance -->
               <div class="form-group">
                 <div class="group-header">
@@ -270,7 +271,7 @@
             </div>
 
             <!-- Tab: Food -->
-            <div class="tab-pane" id="pane-food">
+            <div class="tab-pane" id="pane-food" role="tabpanel" aria-labelledby="tab-food">
               <div class="form-header-desc">
                 <h3>Calculate Diet & Food Footprint</h3>
                 <p>The global food system is a massive source of emissions. Choose your base diet profile and adjust consumption.</p>
@@ -278,36 +279,36 @@
 
               <!-- Base Diet Type -->
               <div class="form-group">
-                <label>Select Base Diet Profile</label>
-                <div class="card-radio-group">
-                  <label class="card-radio-label">
-                    <input type="radio" name="diet-profile" value="heavy-meat" class="hidden-radio">
+                <span class="group-label font-bold text-sm" id="lbl-diet-profile" style="font-weight: 600; font-size: 14px; margin-bottom: 8px;">Select Base Diet Profile</span>
+                <div class="card-radio-group" role="radiogroup" aria-labelledby="lbl-diet-profile">
+                  <label class="card-radio-label" for="radio-heavy-meat">
+                    <input type="radio" name="diet-profile" id="radio-heavy-meat" value="heavy-meat" class="hidden-radio">
                     <span class="radio-card">
-                      <i class="fa-solid fa-drumstick-bite text-error"></i>
+                      <i class="fa-solid fa-drumstick-bite text-error" aria-hidden="true"></i>
                       <span class="radio-title">Heavy Meat Eater</span>
                       <span class="radio-desc">Red meat almost daily</span>
                     </span>
                   </label>
-                  <label class="card-radio-label">
-                    <input type="radio" name="diet-profile" value="moderate-meat" checked class="hidden-radio">
+                  <label class="card-radio-label" for="radio-moderate-meat">
+                    <input type="radio" name="diet-profile" id="radio-moderate-meat" value="moderate-meat" checked class="hidden-radio">
                     <span class="radio-card">
-                      <i class="fa-solid fa-hamburger text-warning"></i>
+                      <i class="fa-solid fa-hamburger text-warning" aria-hidden="true"></i>
                       <span class="radio-title">Moderate Meat</span>
                       <span class="radio-desc">Mixed poultry, pork, light beef</span>
                     </span>
                   </label>
-                  <label class="card-radio-label">
-                    <input type="radio" name="diet-profile" value="vegetarian" class="hidden-radio">
+                  <label class="card-radio-label" for="radio-vegetarian">
+                    <input type="radio" name="diet-profile" id="radio-vegetarian" value="vegetarian" class="hidden-radio">
                     <span class="radio-card">
-                      <i class="fa-solid fa-cheese text-primary"></i>
+                      <i class="fa-solid fa-cheese text-primary" aria-hidden="true"></i>
                       <span class="radio-title">Vegetarian</span>
                       <span class="radio-desc">No meat, includes dairy/eggs</span>
                     </span>
                   </label>
-                  <label class="card-radio-label">
-                    <input type="radio" name="diet-profile" value="vegan" class="hidden-radio">
+                  <label class="card-radio-label" for="radio-vegan">
+                    <input type="radio" name="diet-profile" id="radio-vegan" value="vegan" class="hidden-radio">
                     <span class="radio-card">
-                      <i class="fa-solid fa-carrot text-success"></i>
+                      <i class="fa-solid fa-carrot text-success" aria-hidden="true"></i>
                       <span class="radio-title">Vegan</span>
                       <span class="radio-desc">Strictly plant-based diet</span>
                     </span>
@@ -366,7 +367,7 @@
             </div>
 
             <!-- Tab: Home Energy -->
-            <div class="tab-pane" id="pane-energy">
+            <div class="tab-pane" id="pane-energy" role="tabpanel" aria-labelledby="tab-energy">
               <div class="form-header-desc">
                 <h3>Calculate Home Energy Footprint</h3>
                 <p>Power and heating make up a substantial part of carbon footprints. Check your monthly utility bill specs.</p>
@@ -438,17 +439,17 @@
 
             <!-- Form Actions -->
             <div class="form-footer-actions">
-              <button type="button" class="btn btn-secondary" id="btn-reset-form"><i class="fa-solid fa-rotate-left"></i> Reset Defaults</button>
-              <button type="button" class="btn btn-primary" id="btn-save-inputs"><i class="fa-solid fa-save"></i> Save Baseline & View Stats</button>
+              <button type="button" class="btn btn-secondary" id="btn-reset-form"><i class="fa-solid fa-rotate-left" aria-hidden="true"></i> Reset Defaults</button>
+              <button type="button" class="btn btn-primary" id="btn-save-inputs"><i class="fa-solid fa-save" aria-hidden="true"></i> Save Baseline & View Stats</button>
             </div>
 
           </form>
         </div>
-      </div>
+      </section>
 
       <!-- Action Simulator View -->
-      <div id="view-simulator" class="view-section">
-        
+      <section id="view-simulator" class="view-section" aria-labelledby="sim-title">
+        <h2 id="sim-title" class="sr-only">Action Simulator</h2>
         <!-- Action Dashboard Summary -->
         <div class="simulator-summary glass-card">
           <div class="sim-metric-panel">
@@ -486,11 +487,11 @@
             <h3>Mitigation Plan</h3>
             <p class="text-muted text-sm margin-bottom-md">Select options you could adapt to your lifestyle to live more sustainably. Watch your projected footprint shift in real-time!</p>
             
-            <div class="sim-tabs">
-              <button class="sim-tab active" data-sim-cat="all">All Actions</button>
-              <button class="sim-tab" data-sim-cat="transport">Transport</button>
-              <button class="sim-tab" data-sim-cat="food">Diet & Food</button>
-              <button class="sim-tab" data-sim-cat="energy">Home Energy</button>
+            <div class="sim-tabs" role="tablist" aria-label="Mitigation Categories">
+              <button class="sim-tab active" role="tab" aria-selected="true" id="sim-tab-all" data-sim-cat="all">All Actions</button>
+              <button class="sim-tab" role="tab" aria-selected="false" id="sim-tab-transport" data-sim-cat="transport">Transport</button>
+              <button class="sim-tab" role="tab" aria-selected="false" id="sim-tab-food" data-sim-cat="food">Diet & Food</button>
+              <button class="sim-tab" role="tab" aria-selected="false" id="sim-tab-energy" data-sim-cat="energy">Home Energy</button>
             </div>
 
             <div class="sim-action-list" id="action-list-container">
@@ -527,11 +528,11 @@
           </div>
         </div>
 
-      </div>
+      </section>
 
       <!-- History & Logs View -->
-      <div id="view-history" class="view-section">
-        
+      <section id="view-history" class="view-section" aria-labelledby="hist-title">
+        <h2 id="hist-title" class="sr-only">Emissions History</h2>
         <div class="history-grid-layout">
           <!-- Left: Save Form and Trend Chart -->
           <div class="glass-card history-chart-card">
@@ -539,8 +540,9 @@
             <p class="text-muted text-sm">Save your calculations under different names (e.g., "June 2026", "Post-solar installation") to see your progress chart.</p>
             
             <form id="save-log-form" class="save-log-inline" onsubmit="event.preventDefault();">
-              <input type="text" id="input-log-name" placeholder="Name this entry (e.g., Target 2026)" required class="text-input">
-              <button type="submit" class="btn btn-primary"><i class="fa-solid fa-floppy-disk"></i> Save Current State</button>
+              <label for="input-log-name" class="sr-only">Log Entry Name</label>
+              <input type="text" id="input-log-name" placeholder="Name this entry (e.g., Target 2026)" required maxlength="50" class="text-input">
+              <button type="submit" class="btn btn-primary"><i class="fa-solid fa-floppy-disk" aria-hidden="true"></i> Save Current State</button>
             </form>
 
             <div class="chart-wrapper line-chart-wrapper">
@@ -580,6 +582,6 @@
     </main>
   </div>
 
-  <script src="app.js"></script>
+  <script src="app.js?v=2"></script>
 </body>
 </html>
