@@ -8,7 +8,7 @@ Built during the **#PromptWarsVirtual** challenge using **Google Antigravity IDE
 
 ## 🔗 Project Links
 * **Live Application (Deployed Link)**: [[https://github.io](https://github.io)](https://bhavana0211.github.io/carbon-footprint-tracker/)
-* **GitHub Codebase**: [[https://github.com](https://github.com) [1]](https://github.com/bhaVana0211/carbon-footprint-tracker.gitgithub.com)
+* **GitHub Codebase**: [[[https://github.com](https://github.com) [1]](https://github.com/bhaVana0211/carbon-footprint-tracker.gitgithub.com)](https://github.com/bhaVana0211/carbon-footprint-tracker)
 
 ---
 
